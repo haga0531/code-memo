@@ -22,7 +22,7 @@
 
             <v-select :options="options" v-model="selected" multiple ></v-select>
 
-            <b-button @click="createMemo" type="" class="createButton">create</b-button>
+            <b-button @click="createMemo" type="" class="createButton" :disabled="isDisabled">create</b-button>
           </div>
         </div>
     </b-modal>
@@ -38,12 +38,15 @@
       <div v-for="memo in filterdMemo" :key="memo.id">
         <div class="box">
           <div class="content">
+            <div class="set-language">
             <prism-editor 
               :code="memo.code"
               :language="memo.selectedLanguage"
               :line-numbers="true"
               readonly
             ></prism-editor>
+            <span v-if="memo.selectedLanguage" class="set-language-child">{{memo.selectedLanguage}}</span>
+            </div>
             <div class="description">
               <p >{{memo.description}}</p>
               <div>参照サイト:<a :href="memo.link">{{memo.link}}</a></div>
@@ -109,6 +112,9 @@ export default {
         }
       }
       return memos
+    },
+    isDisabled () {
+      return !this.code
     }
   },
   methods: {
@@ -164,5 +170,21 @@ export default {
 
 .createButton {
   width: 100%;
+}
+
+.set-language {
+  position: relative;
+}
+
+.set-language-child {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: gray;
+  height: 30px;
+  padding: 0 10px;
+  text-align: center;
+  line-height: 30px;
+  color: white;
 }
 </style>

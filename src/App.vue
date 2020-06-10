@@ -16,7 +16,7 @@
 } */
 
 .wrap {
-  margin: 0 auto;
-  width: 85%;
+  margin: 0 auto !important;
+  width: 85% !important;
 }
 </style>
