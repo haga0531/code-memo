@@ -15,9 +15,9 @@ import VuePrismEditor from "vue-prism-editor";
 import "vue-prism-editor/dist/VuePrismEditor.css"; // import the styles
 Vue.component("prism-editor", VuePrismEditor);
 import "prismjs";
-// import "prismjs/themes/prism.css";
-import "prismjs/themes/prism-tomorrow.css";
-import "vue-prism-editor/dist/VuePrismEditor.css";
+import "prismjs/themes/prism.css";
+// import "prismjs/themes/prism-tomorrow.css";
+// import "vue-prism-editor/dist/VuePrismEditor.css";
 
 Vue.config.productionTip = false
 

@@ -1,26 +1,30 @@
 <template>
   <div>
-    <b-modal :active.sync="isCardModalActive" :width="640" scroll="keep">
+    <b-modal :active.sync="isCardModalActive" :width="800" scroll="keep">
         <div class="card modal-radius">
           <div class="card-content">
 
-            <v-select v-bind:options="languageOptions" v-model="selectedLanguage" placeholder="言語を選んでください"></v-select>
-
-            <prism-editor 
-              v-model="code" 
-              :language="selectedLanguage"
-              :line-numbers="true"
-            ></prism-editor>
+            <v-select v-bind:options="languageOptions" v-model="selectedLanguage" placeholder="言語を選択"></v-select>
+            
+            <div class="set-language">
+              <prism-editor 
+                v-model="code" 
+                :language="selectedLanguage"
+                :line-numbers="true"
+              ></prism-editor>
+              <span v-if="selectedLanguage" class="set-language-child">{{selectedLanguage}}</span>
+            </div>
+            
 
             <b-field>
-                <b-input v-model="description" maxlength="200" type="textarea" class="form-description" placeholder="説明)javascriptの変数まじ卍"></b-input>
+                <b-input v-model="description" maxlength="200" type="textarea" class="form-description" placeholder="javascriptの変数まじ卍"></b-input>
             </b-field>
 
             <b-field>
-              <b-input v-model="link" placeholder="参照サイト) https://~~"></b-input>
+              <b-input v-model="link" placeholder="参考にしたサイト、書籍など"></b-input>
             </b-field>
 
-            <v-select :options="options" v-model="selected" multiple ></v-select>
+            <v-select :options="options" v-model="selected" multiple placeholder="タグを入力"></v-select>
 
             <b-button @click="createMemo" type="" class="createButton" :disabled="isDisabled">create</b-button>
           </div>
@@ -39,20 +43,20 @@
         <div class="box">
           <div class="content">
             <div class="set-language">
-            <prism-editor 
-              :code="memo.code"
-              :language="memo.selectedLanguage"
-              :line-numbers="true"
-              readonly
-            ></prism-editor>
-            <span v-if="memo.selectedLanguage" class="set-language-child">{{memo.selectedLanguage}}</span>
+              <prism-editor 
+                :code="memo.code"
+                :language="memo.selectedLanguage"
+                :line-numbers="true"
+                readonly
+              ></prism-editor>
+              <span v-if="memo.selectedLanguage" class="set-language-child">{{memo.selectedLanguage}}</span>
             </div>
             <div class="description">
-              <p >{{memo.description}}</p>
-              <div>参照サイト:<a :href="memo.link">{{memo.link}}</a></div>
-              <span v-for="category in memo.categories" :key="category.name">
+              <p>{{memo.description}}</p>
+              <div v-if="memo.link">参照サイト:<a :href="memo.link">{{memo.link}}</a></div>
+              <b-tag rounded v-for="category in memo.categories" :key="category.name">
                 {{ category }}
-              </span>
+              </b-tag>
             </div>
             
           </div>
@@ -63,6 +67,7 @@
 
 <script>
 import PrismEditor from 'vue-prism-editor'
+import language from '../assets/language'
 import { db } from '../firebase'
 
 export default {
@@ -79,10 +84,7 @@ export default {
       link: '',
       isCardModalActive: false,
       selectedLanguage: '',
-      languageOptions: [
-        'js',
-        'css'
-      ],
+      languageOptions: language,
       selected: '',
       options: [
         'Ruby',
@@ -136,12 +138,16 @@ export default {
 </script>
 
 <style scoped>
+.card-content {
+  padding: 2rem !important;
+}
+
 .modal-radius {
   border-radius: 10px !important;
 }
 
 .box {
-  margin-bottom: 1.5rem;
+  margin-top: 2rem;
 }
 
 .v-select {
@@ -150,7 +156,7 @@ export default {
 }
 
 .form-description {
-  margin: 1.5rem 0;
+  margin-top: 1.5rem;
 }
 
 .description {
@@ -161,7 +167,7 @@ export default {
 .actionBox {
   display: flex;
   justify-content: space-between;
-  margin: 20px 0;
+  padding: 20px 0;
 }
 
 .searchFunc {
