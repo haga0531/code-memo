@@ -1,10 +1,7 @@
 <template>
   <div>
-    <b-button type="" @click="isCardModalActive = true">
-        Create Memo
-    </b-button>
     <b-modal :active.sync="isCardModalActive" :width="640" scroll="keep">
-        <div class="card">
+        <div class="card modal-radius">
           <div class="card-content">
 
             <v-select v-bind:options="languageOptions" v-model="selectedLanguage" placeholder="言語を選んでください"></v-select>
@@ -16,21 +13,27 @@
             ></prism-editor>
 
             <b-field>
-                <b-input v-model="description" maxlength="200" type="textarea" class="form-description" placeholder="説明:)javascriptの変数まじ卍"></b-input>
+                <b-input v-model="description" maxlength="200" type="textarea" class="form-description" placeholder="説明)javascriptの変数まじ卍"></b-input>
             </b-field>
 
             <b-field>
-              <b-input v-model="link" placeholder="参照サイト:) https://~~"></b-input>
+              <b-input v-model="link" placeholder="参照サイト) https://~~"></b-input>
             </b-field>
 
             <v-select :options="options" v-model="selected" multiple ></v-select>
 
-            <b-button @click="createMemo" type="">create</b-button>
+            <b-button @click="createMemo" type="" class="createButton">create</b-button>
           </div>
         </div>
     </b-modal>
 
-      <b-input type="text" v-model="keyword" placeholder="Search..." expanded></b-input>
+      <div class="actionBox">
+        <b-input class="searchFunc" type="text" v-model="keyword" placeholder="Search..." expanded></b-input>
+
+        <b-button class="" type="" @click="isCardModalActive = true">
+            Create
+        </b-button>
+      </div>
 
       <div v-for="memo in filterdMemo" :key="memo.id">
         <div class="box">
@@ -127,6 +130,10 @@ export default {
 </script>
 
 <style scoped>
+.modal-radius {
+  border-radius: 10px !important;
+}
+
 .box {
   margin-bottom: 1.5rem;
 }
@@ -143,5 +150,19 @@ export default {
 .description {
   text-align: left;
   padding: 1rem;
+}
+
+.actionBox {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 0;
+}
+
+.searchFunc {
+  width: 600px;
+}
+
+.createButton {
+  width: 100%;
 }
 </style>

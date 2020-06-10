@@ -1,30 +1,22 @@
 <template>
   <div id="app">
-    <div class="container is-fluid">
+    <div class="container wrap">
       <router-view/>
     </div>
   </div>
 </template>
 
 <style>
-#app {
+/* #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-}
+} */
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
+.wrap {
+  margin: 0 auto;
+  width: 85%;
 }
 </style>
