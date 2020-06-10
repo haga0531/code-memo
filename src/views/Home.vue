@@ -37,7 +37,7 @@
           <div class="content">
             <prism-editor 
               :code="memo.code"
-              language="js"
+              :language="memo.selectedLanguage"
               :line-numbers="true"
               readonly
             ></prism-editor>
@@ -114,7 +114,8 @@ export default {
         code: this.code,
         description: this.description,
         link: this.link,
-        categories: this.selected
+        categories: this.selected,
+        selectedLanguage: this.selectedLanguage
       })
       this.code = ''
       this.description = ''
