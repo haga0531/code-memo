@@ -13,7 +13,7 @@
               v-model="code" 
               :language="selectedLanguage"
               :line-numbers="true"
-              ></prism-editor>
+            ></prism-editor>
 
             <b-field>
                 <b-input v-model="description" maxlength="200" type="textarea" class="form-description" placeholder="説明:)javascriptの変数まじ卍"></b-input>
@@ -22,6 +22,8 @@
             <b-field>
               <b-input v-model="link" placeholder="参照サイト:) https://~~"></b-input>
             </b-field>
+
+            <v-select :options="options" v-model="selected" multiple ></v-select>
 
             <b-button @click="createMemo" type="">create</b-button>
           </div>
@@ -42,6 +44,9 @@
             <div class="description">
               <p >{{memo.description}}</p>
               <div>参照サイト:<a :href="memo.link">{{memo.link}}</a></div>
+              <span v-for="category in memo.categories" :key="category.name">
+                {{ category }}
+              </span>
             </div>
             
           </div>
@@ -71,6 +76,13 @@ export default {
       languageOptions: [
         'js',
         'css'
+      ],
+      selected: '',
+      options: [
+        'Ruby',
+        'Rails',
+        'Javascript',
+        'CSS'
       ]
     }
   },
@@ -101,11 +113,13 @@ export default {
       await db.collection('memos').add({
         code: this.code,
         description: this.description,
-        link: this.link
+        link: this.link,
+        categories: this.selected
       })
       this.code = ''
       this.description = ''
       this.isCardModalActive = false
+      this.selected = ''
     }
   }
 }
@@ -114,6 +128,11 @@ export default {
 <style scoped>
 .box {
   margin-bottom: 1.5rem;
+}
+
+.v-select {
+  margin: 10px 0;
+  width: 50%;
 }
 
 .form-description {
