@@ -57,6 +57,7 @@
               <b-tag rounded v-for="category in memo.categories" :key="category.name">
                 {{ category }}
               </b-tag>
+              <!-- <a class="delete is-large delete-btn"></a> -->
             </div>
             
           </div>
@@ -148,6 +149,7 @@ export default {
 
 .box {
   margin-top: 2rem;
+  position: relative;
 }
 
 .v-select {
@@ -192,5 +194,17 @@ export default {
   text-align: center;
   line-height: 30px;
   color: white;
+}
+
+.tag {
+  background-color: #393e46;
+  color: #f5f2f0;
+}
+
+.delete-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: red;
 }
 </style>
