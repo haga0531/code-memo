@@ -33,6 +33,11 @@
 
       <div class="actionBox">
         <b-input class="searchFunc" type="text" v-model="keyword" placeholder="Search..." expanded></b-input>
+        <select class="form-control" v-model="selectCategory">
+            <option value="">選択</option>
+            <option v-for="(item, index) in categoryItems"
+                    v-bind:value="item" :key="index">{{item}}</option>
+          </select>
 
         <b-button class="" type="" @click="isCardModalActive = true">
             Create
@@ -57,7 +62,7 @@
               <b-tag rounded v-for="category in memo.categories" :key="category.name">
                 {{ category }}
               </b-tag>
-              <!-- <a class="delete is-large delete-btn"></a> -->
+              <a class="delete is-large delete-btn" @click="deleteMemo(memo.id)"></a>
             </div>
             
           </div>
@@ -92,7 +97,14 @@ export default {
         'Rails',
         'Javascript',
         'CSS'
-      ]
+      ],
+      categoryItems: [
+        'Ruby',
+        'Rails',
+        'Javascript',
+        'CSS'
+      ],
+      selectCategory: ''
     }
   },
   created () {
@@ -101,6 +113,9 @@ export default {
         const doc = change.doc
         if (change.type == 'added') {
           this.memos.unshift({ id: doc.id, ...doc.data() })
+        } else if (change.type == 'removed') {
+          const index = this.memos.findIndex(v => v.id == doc.id)
+          this.memos.splice(index, 1)
         }
       })
     })
@@ -112,14 +127,15 @@ export default {
       return Math.max(line.length + 1, 5)
     },
     filterdMemo () {
-      const memos = []
-      for (let i in this.memos) {
-        const memo = this.memos[i]
-        if (memo.code.indexOf(this.keyword) !== -1 || memo.description.indexOf(this.keyword) !== -1) {
-          memos.push(memo)
-        }
-      }
-      return memos
+      return this.memos.filter(memo => {
+        return (
+          (memo.code.indexOf(this.keyword) !== -1)
+          || (memo.description.indexOf(this.keyword) !== -1)
+          // && (memo.categories.forEach(category => {
+          //   category.indexOf(this.selectCategory) !== -1
+          // }))
+        );
+      });
     },
     isDisabled () {
       return !this.code
@@ -138,6 +154,9 @@ export default {
       this.description = ''
       this.isCardModalActive = false
       this.selected = ''
+    },
+    async deleteMemo(memoId) {
+      await db.collection('memos').doc(memoId).delete()
     }
   }
 }
