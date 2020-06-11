@@ -155,8 +155,17 @@ export default {
       this.isCardModalActive = false
       this.selected = ''
     },
-    async deleteMemo(memoId) {
-      await db.collection('memos').doc(memoId).delete()
+    // async deleteMemo(memoId) {
+    //   await db.collection('memos').doc(memoId).delete()
+    // }
+    deleteMemo(memoId) {
+      this.$buefy.dialog.confirm({
+          message: '本当に削除しますか？',
+          onConfirm: () => {
+            db.collection('memos').doc(memoId).delete()
+            this.$buefy.toast.open('削除されました')
+          }
+      })
     }
   }
 }
@@ -227,8 +236,8 @@ export default {
 
 .delete-btn {
   position: absolute;
-  top: 0;
-  right: 0;
-  background-color: red;
+  top: -3px;
+  right: -3px;
+  background-color:#393e46;
 }
 </style>
