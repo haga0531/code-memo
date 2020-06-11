@@ -33,11 +33,14 @@
 
       <div class="actionBox">
         <b-input class="searchFunc" type="text" v-model="keyword" placeholder="Search..." expanded></b-input>
-        <select class="form-control" v-model="selectCategory">
-            <option value="">選択</option>
-            <option v-for="(item, index) in categoryItems"
-                    v-bind:value="item" :key="index">{{item}}</option>
-          </select>
+        <div id="checkboxes">
+          <div v-for="(category,index) in categories" :key="index">
+            <input type="checkbox"  v-model="category.checked">
+            <label>
+              {{ category.value }}
+            </label>
+          </div>
+        </div>
 
         <b-button class="" type="" @click="isCardModalActive = true">
             Create
@@ -68,6 +71,7 @@
           </div>
         </div>
       </div>
+
   </div>
 </template>
 
@@ -98,13 +102,24 @@ export default {
         'Javascript',
         'CSS'
       ],
-      categoryItems: [
-        'Ruby',
-        'Rails',
-        'Javascript',
-        'CSS'
-      ],
-      selectCategory: ''
+      categories: [
+        {
+          checked: false,
+          value: 'Ruby'
+        },
+        {
+          checked: false,
+          value: 'Rails'
+        },
+        {
+          checked: false,
+          value: 'Javascript'
+        },
+        {
+          checked: false,
+          value: 'CSS'
+        }
+      ]
     }
   },
   created () {
@@ -129,14 +144,20 @@ export default {
     filterdMemo () {
       return this.memos.filter(memo => {
         return (
-          (memo.code.indexOf(this.keyword) !== -1)
-          || (memo.description.indexOf(this.keyword) !== -1)
-          // && (memo.categories.forEach(category => {
-          //   category.indexOf(this.selectCategory) !== -1
-          // }))
-        );
-      });
+          (memo.code.indexOf(this.keyword) !== -1 || memo.description.indexOf(this.keyword) !== -1)
+          && 
+          (this.selectedCheckboxes.every(val => memo.categories.indexOf(val) >= 0))
+        )
+      })
     },
+    selectedCheckboxes () {
+			const filters = []
+      const checkedBoxes = this.categories.filter(category => category.checked)
+			checkedBoxes.forEach(element => {
+				filters.push(element.value)
+      })
+			return filters
+		},
     isDisabled () {
       return !this.code
     }
@@ -155,16 +176,13 @@ export default {
       this.isCardModalActive = false
       this.selected = ''
     },
-    // async deleteMemo(memoId) {
-    //   await db.collection('memos').doc(memoId).delete()
-    // }
     deleteMemo(memoId) {
       this.$buefy.dialog.confirm({
-          message: '本当に削除しますか？',
-          onConfirm: () => {
-            db.collection('memos').doc(memoId).delete()
-            this.$buefy.toast.open('削除されました')
-          }
+        message: '本当に削除しますか？',
+        onConfirm: () => {
+          db.collection('memos').doc(memoId).delete()
+          this.$buefy.toast.open('削除されました')
+        }
       })
     }
   }
