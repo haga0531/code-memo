@@ -17,7 +17,7 @@
             
 
             <b-field>
-                <b-input v-model="description" maxlength="200" type="textarea" class="form-description" placeholder="javascriptの変数まじ卍"></b-input>
+                <b-input v-model="description" :rows="rows" type="textarea" class="form-description" placeholder="javascriptの変数まじ卍"></b-input>
             </b-field>
 
             <b-field>
@@ -106,6 +106,11 @@ export default {
     })
   },
   computed: {
+    rows () {
+      const line = this.description.match(/\n/g)
+      if (line == null) return 5
+      return Math.max(line.length + 1, 5)
+    },
     filterdMemo () {
       const memos = []
       for (let i in this.memos) {
