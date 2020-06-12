@@ -32,15 +32,18 @@
     </b-modal>
 
       <div class="actionBox">
-        <b-input class="searchFunc" type="text" v-model="keyword" placeholder="Search..." expanded></b-input>
-        <div id="checkboxes">
-          <div v-for="(category,index) in categories" :key="index">
-            <input type="checkbox"  v-model="category.checked">
-            <label>
-              {{ category.value }}
-            </label>
+        <div>
+          <b-input class="searchFunc" type="text" v-model="keyword" placeholder="Search..." expanded></b-input>
+          <div v-for="(category,index) in categories" :key="index" class="checkbox check_box">
+            <!-- <b-checkbox-button v-model="category.checked"
+                :native-value="category.checked" type="is-dark" class="check_box">
+                <span class="check_box">{{category.value}}</span>
+            </b-checkbox-button> -->
+            <input type="checkbox"  v-model="category.checked" class="check_box" :id="index">
+            <label class="label" :for="index">{{ category.value }}</label>
           </div>
         </div>
+        
 
         <b-button class="" type="" @click="isCardModalActive = true">
             Create
@@ -257,5 +260,26 @@ export default {
   top: -3px;
   right: -3px;
   background-color:#393e46;
+}
+
+.checkbox {
+  width: 100px;
+  display: inline-block;
+  margin-top: 10px;
+  border: 1px#f5f2f0 solid;
+}
+
+label{
+  cursor: pointer;
+  padding:5px;
+  text-align: center;
+  color: #f5f2f0;
+}
+input{
+  display: none;
+}
+.check_box:checked + .label {
+  background-color:#f5f2f0;
+  color: #393e46;
 }
 </style>
