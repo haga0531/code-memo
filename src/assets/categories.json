@@ -1,0 +1,50 @@
+[
+  {
+    "checked": false,
+    "value": "HTML"
+  },
+  {
+    "checked": false,
+    "value": "CSS"
+  },
+  {
+    "checked": false,
+    "value": "Ruby"
+  },
+  {
+    "checked": false,
+    "value": "Rails"
+  },
+  {
+    "checked": false,
+    "value": "Javascript"
+  },
+  {
+    "checked": false,
+    "value": "Vue.js"
+  },
+  {
+    "checked": false,
+    "value": "React.js"
+  },
+  {
+    "checked": false,
+    "value": "Swift"
+  },
+  {
+    "checked": false,
+    "value": "Java"
+  },
+  {
+    "checked": false,
+    "value": "Git"
+  },
+  {
+    "checked": false,
+    "value": "SQL"
+  },
+  {
+    "checked": false,
+    "value": "その他"
+  }
+]

@@ -26,7 +26,7 @@
 
             <v-select :options="options" v-model="selected" multiple placeholder="タグを入力"></v-select>
 
-            <b-button @click="createMemo" type="" class="createButton" :disabled="isDisabled">create</b-button>
+            <b-button @click="createMemo" type="" class="createButton2" :disabled="isDisabled">create</b-button>
           </div>
         </div>
     </b-modal>
@@ -35,17 +35,13 @@
         <div>
           <b-input class="searchFunc" type="text" v-model="keyword" placeholder="Search..." expanded></b-input>
           <div v-for="(category,index) in categories" :key="index" class="checkbox check_box">
-            <!-- <b-checkbox-button v-model="category.checked"
-                :native-value="category.checked" type="is-dark" class="check_box">
-                <span class="check_box">{{category.value}}</span>
-            </b-checkbox-button> -->
             <input type="checkbox"  v-model="category.checked" class="check_box" :id="index">
             <label class="label" :for="index">{{ category.value }}</label>
           </div>
         </div>
         
 
-        <b-button class="" type="" @click="isCardModalActive = true">
+        <b-button class="createButton1" type="" @click="isCardModalActive = true">
             Create
         </b-button>
       </div>
@@ -64,7 +60,7 @@
             </div>
             <div class="description">
               <p>{{memo.description}}</p>
-              <div v-if="memo.link">参照サイト:<a :href="memo.link">{{memo.link}}</a></div>
+              <div v-if="memo.link" class="sitelink">参照サイト:<a :href="memo.link">{{memo.link}}</a></div>
               <b-tag rounded v-for="category in memo.categories" :key="category.name">
                 {{ category }}
               </b-tag>
@@ -81,6 +77,8 @@
 <script>
 import PrismEditor from 'vue-prism-editor'
 import language from '../assets/language'
+import categories from '../assets/categories.json'
+import tags from '../assets/tags'
 import { db } from '../firebase'
 
 export default {
@@ -99,30 +97,8 @@ export default {
       selectedLanguage: '',
       languageOptions: language,
       selected: '',
-      options: [
-        'Ruby',
-        'Rails',
-        'Javascript',
-        'CSS'
-      ],
-      categories: [
-        {
-          checked: false,
-          value: 'Ruby'
-        },
-        {
-          checked: false,
-          value: 'Rails'
-        },
-        {
-          checked: false,
-          value: 'Javascript'
-        },
-        {
-          checked: false,
-          value: 'CSS'
-        }
-      ]
+      options: tags,
+      categories: categories
     }
   },
   created () {
@@ -178,6 +154,8 @@ export default {
       this.description = ''
       this.isCardModalActive = false
       this.selected = ''
+      this.link = ''
+      this.selectedLanguage = ''
     },
     deleteMemo(memoId) {
       this.$buefy.dialog.confirm({
@@ -230,7 +208,14 @@ export default {
   width: 600px;
 }
 
-.createButton {
+.createButton1 {
+  color: #393e46;
+  background-color: #f5f2f0;
+  border-color: #f5f2f0;
+  font-weight: bold;
+}
+
+.createButton2 {
   width: 100%;
 }
 
@@ -281,5 +266,9 @@ input{
 .check_box:checked + .label {
   background-color:#f5f2f0;
   color: #393e46;
+}
+
+.sitelink {
+  margin-bottom: 10px;
 }
 </style>
